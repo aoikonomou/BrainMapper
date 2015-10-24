@@ -11,6 +11,7 @@
 			// constructor code
 
 			//this.doubleClickEnabled = true;
+			//this.border = true;
 		
 		}
 	}
