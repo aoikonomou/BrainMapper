@@ -3,43 +3,49 @@
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.display.DisplayObject;
+	import flash.external.ExternalInterface; // For talking to the browser, tyring to test right click that doesn't work in Flash when I test my movie
+	import flash.text.*
+
 
 
 	public class BrainMapper extends MovieClip {
-		
-		var symbolArray:Array = new Array();
 
+		var symbolArray: Array = new Array(); //Holds all display objects the user creates
+		var debugTextField: TextField = new TextField();
 
 		public function BrainMapper() {
 			// constructor code
 
 			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.DOUBLE_CLICK, addSymbol);
-		
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, addSymbol);
+			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, scrollStage);
+			//stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+
+
+			// Debug Textbox
+
+			addChild(debugTextField);
+			debugTextField.text = "andreas";
+			debugTextField.border = true;
+
 
 		}
-		
-		
+
+
 		//////// Functions live below this line //////////////////
 
 
-		function addSymbol(e:MouseEvent) {
-			
-			var objectx:Symbol1 = new Symbol1();
-			
+		function addSymbol(e: MouseEvent) {
+
+			var objectx: Symbol1 = new Symbol1();
+			objectx.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
 			symbolArray.push(objectx);
-			//var textbox1: textBoxSymbol = new textBoxSymbol();
-			var currentObject = symbolArray[symbolArray.length-1];
+			var currentObject = symbolArray[symbolArray.length - 1];
 			addChild(currentObject);
 
-			//addChild(textbox1);
-			//sprite1.startDrag(true);
-			//textbox1.x = mouseX - (sprite1.width / 2); //symbolx;
-			//textbox1.y = mouseY - (sprite1.height / 2); //symboly;
-			
 			currentObject.x = mouseX - (currentObject.width / 2);
 			currentObject.y = mouseY - (currentObject.height / 2);
-			
+
 			trace("Symbol Array size after addition is: ");
 			trace(symbolArray.length);
 
@@ -50,20 +56,28 @@
 
 		function removeSymbol(e: MouseEvent) {
 
-			
-			var thisObject:DisplayObject = e.currentTarget as DisplayObject;
-			trace(thisObject);
-			
-			thisObject.x = mouseX - (thisObject.width / 2);
-			thisObject.x = mouseY - (thisObject.height / 2);
 
-	trace("Symbol Array size after removal is: ");
-			trace(symbolArray.length);
-			
+			//e.target is the object from which the event originated. The original messager	
+			//e.currentTarget is the object that last bubbled up the event
+
+			trace(e.target);
+
+			removeChild(e.target as DisplayObject);
+
+			symbolArray.pop();
+
 
 		}
 
 
+		function scrollStage(e: MouseEvent) {
+
+			//ExternalInterface.call("alert", "Hello ExternalInterface");
+			symbolArray[1].x = 0;
+
+
+
+		}
 	}
 
 }
