@@ -10,16 +10,17 @@
 
 	public class BrainMapper extends MovieClip {
 
-		var symbolArray: Array = new Array(); //Holds all display objects the user creates
+		var symbolArray: Array = new Array(); //Holds all display objects (circles) the user creates
+		var textFieldArray: Array = new Array(); // Holds all textfields the user creates
 		var debugTextField: TextField = new TextField();
 
 		public function BrainMapper() {
 			// constructor code
 
 			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, addSymbol);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, addTextBox);
 			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, scrollStage);
-			//stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+
 
 
 			// Debug Textbox
@@ -27,6 +28,9 @@
 			addChild(debugTextField);
 			debugTextField.text = "andreas";
 			debugTextField.border = true;
+			debugTextField.width = 200;
+			debugTextField.height = 200;
+			debugTextField.wordWrap = true;
 
 
 		}
@@ -51,6 +55,27 @@
 
 		}
 
+		function addTextBox(e: MouseEvent) {
+
+			var objectx: TextField = new TextField();
+			objectx.text = "bla";
+			objectx.border = true;
+			objectx.width = 40;
+			objectx.height = 20;
+
+			objectx.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+			objectx.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, moveObject);
+			textFieldArray.push(objectx);
+			var currentObject = textFieldArray[textFieldArray.length - 1];
+			addChild(currentObject);
+
+			currentObject.x = mouseX - (currentObject.width / 2);
+			currentObject.y = mouseY - (currentObject.height / 2);
+
+			trace("Symbol Array size after addition is: ");
+			trace(symbolArray.length);
+
+		}
 
 
 
@@ -69,6 +94,26 @@
 
 		}
 
+
+		function moveObject(e: MouseEvent) {
+
+
+			//e.target is the object from which the event originated. The original messager	
+			//e.currentTarget is the object that last bubbled up the event
+
+			trace(e.target);
+			debugTextField.text = "Middle button pressed";
+
+			var objectx: DisplayObject = e.target as DisplayObject;
+			objectx.x = stage.mouseX;
+			objectx.y = stage.mouseY;
+
+			debugTextField.appendText("Middle button pressed ");
+			debugTextField.appendText(objectx as String);
+			debugTextField.appendText(mouseX as String);
+
+
+		}
 
 		function scrollStage(e: MouseEvent) {
 
