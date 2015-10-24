@@ -9,8 +9,6 @@
 		public function Symbol1() {
 			// constructor code
 			
-			trace("another andreas")
-			
 			
 		}
 	}
