@@ -4,9 +4,8 @@
 	import flash.events.MouseEvent;
 	import flash.display.DisplayObject;
 	import flash.external.ExternalInterface; // For talking to the browser, tyring to test right click that doesn't work in Flash when I test my movie
-	import flash.text.*
-		import flash.display.Sprite;
-
+	import flash.text.*;
+	import flash.display.Sprite;
 
 
 	public class BrainMapper extends MovieClip {
@@ -20,7 +19,7 @@
 
 			stage.doubleClickEnabled = true;
 			stage.addEventListener(MouseEvent.DOUBLE_CLICK, addTextBox);
-			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, moveObject);
+			//stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, moveObject);
 
 
 			// Debug Textbox
@@ -86,7 +85,8 @@
 			var currentObject = textFieldArray[textFieldArray.length - 1];
 
 			textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
-			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, moveObject);
+			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragObject);
+			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseObject);
 
 
 
@@ -117,29 +117,30 @@
 
 		}
 
-
-		function moveObject(e: MouseEvent) {
-
+		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
+		function dragObject(e: MouseEvent) {
 
 			//e.target is the object from which the event originated. The original messager	
 			//e.currentTarget is the object that last bubbled up the event
 
-			trace(e.target.parent);
-			debugTextField.text = "Middle button pressed";
-
-			//var objectx: DisplayObject = e.target as DisplayObject;
-			//var objectx: Sprite = e.target as Sprite;
-
-			//objectx.startDrag();
 			e.target.parent.startDrag();
-			//objectx.y = stage.mouseY;
 
 			debugTextField.appendText("Middle button pressed ");
-			//debugTextField.appendText(objectx as String);
-			//debugTextField.appendText(mouseX as String);
-
-
+		
 		}
+		
+		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
+		function releaseObject(e: MouseEvent) {
+
+			//e.target is the object from which the event originated. The original messager	
+			//e.currentTarget is the object that last bubbled up the event
+
+			e.target.parent.stopDrag();
+
+			debugTextField.appendText("Middle button pressed ");
+		
+		}		
+		
 
 		function scrollStage(e: MouseEvent) {
 
