@@ -13,6 +13,10 @@
 		var symbolArray: Array = new Array(); //Holds all display objects (circles) the user creates
 		var textFieldArray: Array = new Array(); // Holds all textfields the user creates
 		var debugTextField: TextField = new TextField();
+		
+		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
+		
+		
 
 		public function BrainMapper() {
 			// constructor code
