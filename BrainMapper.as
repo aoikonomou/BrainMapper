@@ -18,7 +18,7 @@
 			// constructor code
 
 			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, addTextBox);
+			stage.addEventListener(MouseEvent.DOUBLE_CLICK, addTextBox);
 			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, scrollStage);
 
 
@@ -62,6 +62,17 @@
 			objectx.border = true;
 			objectx.width = 40;
 			objectx.height = 20;
+			objectx.type = TextFieldType.INPUT;
+			objectx.autoSize = "left";
+			objectx.multiline = true;
+
+			var format1: TextFormat = new TextFormat();
+			format1.size = 18;
+			format1.align = "center";
+
+			objectx.setTextFormat(format1);
+
+
 
 			objectx.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
 			objectx.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, moveObject);
