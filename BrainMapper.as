@@ -6,6 +6,8 @@
 	import flash.external.ExternalInterface; // For talking to the browser, tyring to test right click that doesn't work in Flash when I test my movie
 	import flash.text.*;
 	import flash.display.Sprite;
+	import flash.ui.Mouse;
+	import flash.display.Shape;
 
 
 	public class BrainMapper extends MovieClip {
@@ -13,10 +15,10 @@
 		var symbolArray: Array = new Array(); //Holds all display objects (circles) the user creates
 		var textFieldArray: Array = new Array(); // Holds all textfields the user creates
 		var debugTextField: TextField = new TextField();
-		
+
 		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
-		
-		
+
+
 
 		public function BrainMapper() {
 			// constructor code
@@ -102,6 +104,8 @@
 			trace("Symbol Array size after addition is: ");
 			trace(symbolArray.length);
 
+			connectObjects();
+
 		}
 
 
@@ -130,9 +134,9 @@
 			e.target.parent.startDrag();
 
 			debugTextField.appendText("Middle button pressed ");
-		
+
 		}
-		
+
 		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
 		function releaseObject(e: MouseEvent) {
 
@@ -142,9 +146,9 @@
 			e.target.parent.stopDrag();
 
 			debugTextField.appendText("Middle button pressed ");
-		
-		}		
-		
+
+		}
+
 
 		function scrollStage(e: MouseEvent) {
 
@@ -152,8 +156,26 @@
 			symbolArray[1].x = 0;
 
 
+		}
+
+		function connectObjects() {
+
+			var my_shape: Shape = new Shape(); //Shape class is the least memory intensive one from sprite and MovieClip
+
+			addChild(my_shape);
+
+			my_shape.graphics.lineStyle(1, 0xFF0000, 1);
+			my_shape.graphics.moveTo(10, 100);
+			my_shape.graphics.lineTo(100, 100);
+
 
 		}
+
+
+
+
+
+
 	}
 
 }
