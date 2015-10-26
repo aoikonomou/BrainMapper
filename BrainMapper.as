@@ -8,69 +8,65 @@
 	import flash.display.Sprite;
 	import flash.ui.Mouse;
 	import flash.display.Shape;
+	import flash.geom.ColorTransform;
 
 
 	public class BrainMapper extends MovieClip {
 
-		var symbolArray: Array = new Array(); //Holds all display objects (circles) the user creates
+
 		var textFieldArray: Array = new Array(); // Holds all textfields the user creates
-		var debugTextField: TextField = new TextField();
+		var debugTextField: TextField = new TextField(); //To display debug info in
 
 		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
-
-
+		var saveList: Array = new Array();
 
 		public function BrainMapper() {
 			// constructor code
 
+			//Initialise state saving matrix
+			saveList["Number"] = new Array(); // Text box number
+			saveList["ObjectRef"] = new Array(); // Object reference in memory
+			saveList["X"] = new Array(); // Text box x
+			saveList["Y"] = new Array(); // Text box y
+
+			// Initialise other things
 			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.DOUBLE_CLICK, addTextBox);
-			//stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, moveObject);
+			stage.addEventListener(MouseEvent.CLICK, addTextBox);
+
+			createDebugTextBox(); // To put debug info in
+
+		}
 
 
-			// Debug Textbox
+		//////// Custom Functions live below this line /////////////////
+
+		function createDebugTextBox(): void {
+
 
 			addChild(debugTextField);
-			debugTextField.text = "andreas";
+			debugTextField.text = "Debug Text Box";
 			debugTextField.border = true;
 			debugTextField.width = 200;
 			debugTextField.height = 200;
+			debugTextField.x = 0;
+			debugTextField.y = 0;
 			debugTextField.wordWrap = true;
-
-
 		}
 
-
-		//////// Functions live below this line //////////////////
-
-
-		function addSymbol(e: MouseEvent) {
-
-			var objectx: Symbol1 = new Symbol1();
-			objectx.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
-			symbolArray.push(objectx);
-			var currentObject = symbolArray[symbolArray.length - 1];
-			addChild(currentObject);
-
-			currentObject.x = mouseX - (currentObject.width / 2);
-			currentObject.y = mouseY - (currentObject.height / 2);
-
-			trace("Symbol Array size after addition is: ");
-			trace(symbolArray.length);
-
-		}
 
 		function addTextBox(e: MouseEvent) {
 
-			var objectx: TextField = new TextField();
-			objectx.text = "bla";
-			objectx.border = true;
-			objectx.width = 40;
-			objectx.height = 20;
-			objectx.type = TextFieldType.INPUT;
-			objectx.autoSize = "left";
-			objectx.multiline = true;
+			// Create new textbox object
+			var newTextField: TextField = new TextField();
+			newTextField.text = "bla";
+			newTextField.border = true;
+			newTextField.width = 40;
+			newTextField.height = 20;
+			newTextField.type = TextFieldType.DYNAMIC; //Makes it updatable but you can't type in in. INPUT for that.
+			newTextField.autoSize = "left";
+			newTextField.multiline = true;
 
+			// Create formatting for the new text box
 			var format1: TextFormat = new TextFormat();
 			format1.size = 18;
 			format1.align = "center";
@@ -79,22 +75,39 @@
 			//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
 			//format1.bottomMargin = 30;
 
+			newTextField.setTextFormat(format1);
 
-			objectx.setTextFormat(format1);
-
+			// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.)
 
 			var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
-			textContainer.addChild(objectx);
 
+			// Changing the colour of the container Sprite
+			var textContainerSpriteColorTransform: ColorTransform = new ColorTransform();
+			textContainerSpriteColorTransform.color = 0x0000FF;
+			textContainer.transform.colorTransform = textContainerSpriteColorTransform;
+			//textContainer.width= 30;
+			//textContainer.height =20;
+
+			textContainer.graphics.beginFill(0x0000FF, .4); // blue, .4 opacity 
+			textContainer.graphics.moveTo(0, 0);
+			textContainer.graphics.lineTo(0, 100);
+			textContainer.graphics.lineTo(100, 100);
+			textContainer.graphics.lineTo(100, 0);
+			textContainer.graphics.endFill();
+
+
+
+
+			textContainer.addChild(newTextField);
 
 			textFieldArray.push(textContainer);
 			var currentObject = textFieldArray[textFieldArray.length - 1];
 
+			textContainer.addEventListener(MouseEvent.MOUSE_DOWN, lineStart);
+			textContainer.addEventListener(MouseEvent.MOUSE_UP, lineStop);
 			textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
 			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragObject);
 			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseObject);
-
-
 
 			addChild(textContainer);
 
@@ -102,9 +115,8 @@
 			textContainer.y = mouseY - (currentObject.height / 2);
 
 			trace("Symbol Array size after addition is: ");
-			trace(symbolArray.length);
 
-			connectObjects();
+			connectObjects(textContainer.x, textContainer.y);
 
 		}
 
@@ -120,7 +132,7 @@
 
 			removeChild(e.target.parent as DisplayObject);
 
-			symbolArray.pop();
+			//symbolArray.pop();
 
 
 		}
@@ -153,27 +165,37 @@
 		function scrollStage(e: MouseEvent) {
 
 			//ExternalInterface.call("alert", "Hello ExternalInterface");
-			symbolArray[1].x = 0;
+			//symbolArray[1].x = 0;
 
 
 		}
 
-		function connectObjects() {
+		function connectObjects(x, y) {
 
 			var my_shape: Shape = new Shape(); //Shape class is the least memory intensive one from sprite and MovieClip
 
 			addChild(my_shape);
 
 			my_shape.graphics.lineStyle(1, 0xFF0000, 1);
-			my_shape.graphics.moveTo(10, 100);
+			my_shape.graphics.moveTo(x, y);
 			my_shape.graphics.lineTo(100, 100);
 
 
 		}
 
 
+		function lineStart(): void {
+
+			debugTextField.appendText("Line Started ");
 
 
+		}
+		function lineStop(): void {
+
+			debugTextField.appendText("Line Stopped ");
+
+
+		}
 
 
 	}
