@@ -62,7 +62,7 @@
 			newTextField.border = true;
 			newTextField.width = 40;
 			newTextField.height = 20;
-			newTextField.type = TextFieldType.DYNAMIC; //Makes it updatable but you can't type in in. INPUT for that.
+			newTextField.type = TextFieldType.INPUT; //Makes it updatable but you can't type in in. INPUT for that.
 			newTextField.autoSize = "left";
 			newTextField.multiline = true;
 
@@ -81,22 +81,20 @@
 
 			var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
 
-			// Changing the colour of the container Sprite
-			var textContainerSpriteColorTransform: ColorTransform = new ColorTransform();
-			textContainerSpriteColorTransform.color = 0x0000FF;
-			textContainer.transform.colorTransform = textContainerSpriteColorTransform;
-			//textContainer.width= 30;
-			//textContainer.height =20;
+
+			// To size the container sprite we need to put some graphics in it first for some reason.
 
 			textContainer.graphics.beginFill(0x0000FF, .4); // blue, .4 opacity 
-			textContainer.graphics.moveTo(0, 0);
-			textContainer.graphics.lineTo(0, 100);
-			textContainer.graphics.lineTo(100, 100);
-			textContainer.graphics.lineTo(100, 0);
+			textContainer.graphics.drawRect(0, 25, newTextField.width, newTextField.height); // (x spacing, y spacing, width, height)
 			textContainer.graphics.endFill();
 
 
+			trace(textContainer.width);
+			//textContainer.width = newTextField.width + 80;
+			//textContainer.height = newTextField.height + 40;
 
+			//newTextField.x = textContainer.width / 5;
+			//newTextField.y = int(textContainer.height / 5);
 
 			textContainer.addChild(newTextField);
 
@@ -110,7 +108,9 @@
 			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseObject);
 
 			addChild(textContainer);
+			
 
+			//Creates the text container where the user clicked on the stage
 			textContainer.x = mouseX - (currentObject.width / 2);
 			textContainer.y = mouseY - (currentObject.height / 2);
 
@@ -128,9 +128,8 @@
 			//e.target is the object from which the event originated. The original messager	
 			//e.currentTarget is the object that last bubbled up the event
 
-			trace(e.target.parent);
-
-			removeChild(e.target.parent as DisplayObject);
+			removeChild(e.target as DisplayObject);
+			debugTextField.appendText("I should be deleted");
 
 			//symbolArray.pop();
 
@@ -143,7 +142,7 @@
 			//e.target is the object from which the event originated. The original messager	
 			//e.currentTarget is the object that last bubbled up the event
 
-			e.target.parent.startDrag();
+			e.target.startDrag();
 
 			debugTextField.appendText("Middle button pressed ");
 
@@ -155,7 +154,7 @@
 			//e.target is the object from which the event originated. The original messager	
 			//e.currentTarget is the object that last bubbled up the event
 
-			e.target.parent.stopDrag();
+			e.target.stopDrag();
 
 			debugTextField.appendText("Middle button pressed ");
 
@@ -174,11 +173,16 @@
 
 			var my_shape: Shape = new Shape(); //Shape class is the least memory intensive one from sprite and MovieClip
 
-			addChild(my_shape);
 
-			my_shape.graphics.lineStyle(1, 0xFF0000, 1);
+			my_shape.graphics.lineStyle(4, 0xFF0000, 1); // x=thickness, y=colour, z= opacity
 			my_shape.graphics.moveTo(x, y);
 			my_shape.graphics.lineTo(100, 100);
+			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+			
+
+
+			addChild(my_shape);
+
 
 
 		}
