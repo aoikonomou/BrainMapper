@@ -20,6 +20,9 @@
 
 		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
 		var saveList: Array = new Array();
+		
+		var a:Array = new Array(); // Point A x/y coordinates of connecting line
+				var b:Array = new Array(); // Point B of connecting line
 
 		public function BrainMapper()
 		{
@@ -133,9 +136,9 @@
 			objectData.push(textContainer.y);
 			
 			saveList.push(objectData);
+			trace(saveList[saveList.length-1][2]);
 			
-
-						trace("saveList Array size after addition is: ");
+			trace("saveList Array size after addition is: ");
 			trace(saveList.length);
 
 		}
@@ -202,8 +205,8 @@
 
 		my_shape.graphics.lineStyle(4, 0xFF0000, 1);
 		// x=thickness, y=colour, z= opacity;
-		my_shape.graphics.moveTo(x, y);
-		my_shape.graphics.lineTo(100, 100);
+		my_shape.graphics.moveTo(x[0], x[1]);
+		my_shape.graphics.lineTo(y[0], y[1]);
 		my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
 
 
@@ -215,16 +218,27 @@
 	}
 
 
-	function lineStart():void
+	function lineStart(e: MouseEvent):void
 	{
 
 		debugTextField.appendText("Line Started ");
 
+		
+		
+		a[0]=mouseX;
+		a[1]=mouseY;
+
 
 	}
-	function lineStop():void
+	function lineStop(e: MouseEvent):void
 	{
-
+		
+		var b:Array = new Array();
+		
+		b[0]=mouseX;
+		b[1]=mouseY;
+		
+		connectObjects(a,b);
 		debugTextField.appendText("Line Stopped ");
 
 
