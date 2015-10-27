@@ -1,9 +1,10 @@
-﻿package {
+﻿package 
+{
 
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.display.DisplayObject;
-	import flash.external.ExternalInterface; // For talking to the browser, tyring to test right click that doesn't work in Flash when I test my movie
+	import flash.external.ExternalInterface;// For talking to the browser, tyring to test right click that doesn't work in Flash when I test my movie
 	import flash.text.*;
 	import flash.display.Sprite;
 	import flash.ui.Mouse;
@@ -11,36 +12,39 @@
 	import flash.geom.ColorTransform;
 
 
-	public class BrainMapper extends MovieClip {
+	public class BrainMapper extends MovieClip
+	{
 
 
-		var textFieldArray: Array = new Array(); // Holds all textfields the user creates
-		var debugTextField: TextField = new TextField(); //To display debug info in
+		var textFieldArray: Array = new Array();// Holds all textfields the user creates
+		var debugTextField: TextField = new TextField();//To display debug info in
 
 		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
 		var saveList: Array = new Array();
 
-		public function BrainMapper() {
+		public function BrainMapper()
+		{
 			// constructor code
 
 			//Initialise state saving matrix
-			saveList["Number"] = new Array(); // Text box number
-			saveList["ObjectRef"] = new Array(); // Object reference in memory
-			saveList["X"] = new Array(); // Text box x
-			saveList["Y"] = new Array(); // Text box y
+			saveList["Number"] = new Array();// Text box number
+			saveList["ObjectRef"] = new Array();// Object reference in memory
+			saveList["X"] = new Array();// Text box x
+			saveList["Y"] = new Array();// Text box y
 
 			// Initialise other things
 			stage.doubleClickEnabled = true;
 			stage.addEventListener(MouseEvent.CLICK, addTextBox);
 
-			createDebugTextBox(); // To put debug info in
+			createDebugTextBox();// To put debug info in
 
 		}
 
 
 		//////// Custom Functions live below this line /////////////////
 
-		function createDebugTextBox(): void {
+		function createDebugTextBox():void
+		{
 
 
 			addChild(debugTextField);
@@ -54,7 +58,8 @@
 		}
 
 
-		function addTextBox(e: MouseEvent) {
+		function addTextBox(e: MouseEvent)
+		{
 
 			// Create new textbox object
 			var newTextField: TextField = new TextField();
@@ -62,7 +67,7 @@
 			newTextField.border = true;
 			newTextField.width = 40;
 			newTextField.height = 20;
-			newTextField.type = TextFieldType.INPUT; //Makes it updatable but you can't type in in. INPUT for that.
+			newTextField.type = TextFieldType.INPUT;//Makes it updatable but you can't type in in. INPUT for that.
 			newTextField.autoSize = "left";
 			newTextField.multiline = true;
 
@@ -70,22 +75,30 @@
 			var format1: TextFormat = new TextFormat();
 			format1.size = 18;
 			format1.align = "center";
-			format1.leftMargin = 30;
-			format1.rightMargin = 30;
+			//format1.leftMargin = 30;
+			//format1.rightMargin = 30;
 			//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
 			//format1.bottomMargin = 30;
 
 			newTextField.setTextFormat(format1);
 
-			// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.)
+			// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.);
 
-			var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
+			var textContainer: Sprite = new Sprite();//Only sprites can be dragged and dropped and MovieClipps. Not text fields
+			var textContainerInternalPadding = 20;
 
 
 			// To size the container sprite we need to put some graphics in it first for some reason.
 
-			textContainer.graphics.beginFill(0x0000FF, .4); // blue, .4 opacity 
-			textContainer.graphics.drawRect(0, 25, newTextField.width, newTextField.height); // (x spacing, y spacing, width, height)
+
+
+			textContainer.graphics.beginFill(0x0000FF, .4); // blue, .4 opacity ;
+			
+			textContainer.graphics.drawRect(0, 0, 
+			textContainerInternalPadding+newTextField.width+textContainerInternalPadding,
+			textContainerInternalPadding+newTextField.height+textContainerInternalPadding
+			);// (x spacing, y spacing, width, height)
+			
 			textContainer.graphics.endFill();
 
 
@@ -93,8 +106,8 @@
 			//textContainer.width = newTextField.width + 80;
 			//textContainer.height = newTextField.height + 40;
 
-			//newTextField.x = textContainer.width / 5;
-			//newTextField.y = int(textContainer.height / 5);
+			newTextField.x = textContainer.width / 5;
+			newTextField.y = int(textContainer.height / 5);
 
 			textContainer.addChild(newTextField);
 
@@ -108,7 +121,7 @@
 			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseObject);
 
 			addChild(textContainer);
-			
+
 
 			//Creates the text container where the user clicked on the stage
 			textContainer.x = mouseX - (currentObject.width / 2);
@@ -122,86 +135,95 @@
 
 
 
-		function removeSymbol(e: MouseEvent) {
+		function removeSymbol(e: MouseEvent)
+		{
 
 
-			//e.target is the object from which the event originated. The original messager	
+			//e.target is the object from which the event originated. The original messager
 			//e.currentTarget is the object that last bubbled up the event
 
 			removeChild(e.target as DisplayObject);
 			debugTextField.appendText("I should be deleted");
-
-			//symbolArray.pop();
-
-
 		}
 
-		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
-		function dragObject(e: MouseEvent) {
-
-			//e.target is the object from which the event originated. The original messager	
-			//e.currentTarget is the object that last bubbled up the event
-
-			e.target.startDrag();
-
-			debugTextField.appendText("Middle button pressed ");
-
-		}
-
-		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
-		function releaseObject(e: MouseEvent) {
-
-			//e.target is the object from which the event originated. The original messager	
-			//e.currentTarget is the object that last bubbled up the event
-
-			e.target.stopDrag();
-
-			debugTextField.appendText("Middle button pressed ");
-
-		}
+		//symbolArray.pop();
 
 
-		function scrollStage(e: MouseEvent) {
+	
 
-			//ExternalInterface.call("alert", "Hello ExternalInterface");
-			//symbolArray[1].x = 0;
+	// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
+	function dragObject(e: MouseEvent)
+	{
 
+		//e.target is the object from which the event originated. The original messager
+		//e.currentTarget is the object that last bubbled up the event
 
-		}
+		e.target.startDrag();
 
-		function connectObjects(x, y) {
+		debugTextField.appendText("Middle button pressed ");
 
-			var my_shape: Shape = new Shape(); //Shape class is the least memory intensive one from sprite and MovieClip
+	}
 
+	// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
+	function releaseObject(e: MouseEvent)
+	{
 
-			my_shape.graphics.lineStyle(4, 0xFF0000, 1); // x=thickness, y=colour, z= opacity
-			my_shape.graphics.moveTo(x, y);
-			my_shape.graphics.lineTo(100, 100);
-			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
-			
+		//e.target is the object from which the event originated. The original messager
+		//e.currentTarget is the object that last bubbled up the event
 
+		e.target.stopDrag();
 
-			addChild(my_shape);
+		debugTextField.appendText("Middle button pressed ");
 
-
-
-		}
-
-
-		function lineStart(): void {
-
-			debugTextField.appendText("Line Started ");
+	}
 
 
-		}
-		function lineStop(): void {
+	function scrollStage(e: MouseEvent)
+	{
 
-			debugTextField.appendText("Line Stopped ");
-
-
-		}
+		//ExternalInterface.call("alert", "Hello ExternalInterface");
+		//symbolArray[1].x = 0;
 
 
 	}
+
+	function connectObjects(x, y)
+	{
+
+		var my_shape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
+
+
+		my_shape.graphics.lineStyle(4, 0xFF0000, 1);
+		// x=thickness, y=colour, z= opacity;
+		my_shape.graphics.moveTo(x, y);
+		my_shape.graphics.lineTo(100, 100);
+		my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+
+
+
+		addChild(my_shape);
+
+
+
+	}
+
+
+	function lineStart():void
+	{
+
+		debugTextField.appendText("Line Started ");
+
+
+	}
+	function lineStop():void
+	{
+
+		debugTextField.appendText("Line Stopped ");
+
+
+	}
+
+
+}
 
 }
