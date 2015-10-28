@@ -56,6 +56,10 @@
 		function addScreenSymbolText(e: MouseEvent)
 		{
 
+			//I suppose I need to test what is under the mouse here. If there is anything else other than the stage then do not create a new symbol, otherwise do
+			if(findObjectsUnderMouse(e)){debugTextField.appendText("My function is working yeyeye!");
+			
+
 			// Create new textbox object
 			var newTextField: TextField = new TextField();
 			newTextField.text = "blabla";
@@ -133,6 +137,7 @@
 			
 			trace("saveList Array size after addition is: ");
 			trace(saveList.length);
+		}
 
 		}
 
@@ -222,11 +227,12 @@
 		}
 		
 		
-		private function findObjectsUnderMouse ($e:MouseEvent):void
+		private function findObjectsUnderMouse ($e:MouseEvent)
 		{
 
 			var pt:Point = new Point (mouseX, mouseY);
-			var objects:Array = this.getObjectsUnderPoint (pt); 
+			var objects:Array = this.getObjectsUnderPoint (pt);
+
 			for (var i:int = 0; i< objects.length; i++)
 			{
 				trace(">>", objects[i].name,": ",objects[i]);
@@ -238,6 +244,14 @@
 				trace(">>", p.name,": ",p);
 				p = p.parent;
 			}
+
+			if (objects.length<2){
+				return true; }
+				
+				else {
+					return false;
+				}
+			
 
 
 		}
