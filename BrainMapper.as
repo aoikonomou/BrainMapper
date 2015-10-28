@@ -30,16 +30,16 @@
 
 			// Initialise other things
 			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.CLICK, addTextBox);
+			stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
 
-			createDebugTextBox();// To put debug info in
+			createDebugInterface();// To put debug info in
 
 		}
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
 
-		function createDebugTextBox():void
+		function createDebugInterface():void
 		{
 
 			addChild(debugTextField);
@@ -53,7 +53,7 @@
 		}
 
 
-		function addTextBox(e: MouseEvent)
+		function addScreenSymbolText(e: MouseEvent)
 		{
 
 			// Create new textbox object
@@ -106,11 +106,11 @@
 
 
 			// Allow textContainer to be deleted and moved as well as connected with a line through mouse clicks.
-			textContainer.addEventListener(MouseEvent.MOUSE_DOWN, lineStart);
-			textContainer.addEventListener(MouseEvent.MOUSE_UP, lineStop);
-			textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
-			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragObject);
-			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseObject);
+			textContainer.addEventListener(MouseEvent.MOUSE_DOWN, ruleLineStart);
+			textContainer.addEventListener(MouseEvent.MOUSE_UP, ruleLineStop);
+			textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
+			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragScreenSymbol);
+			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseScreenSymbol);
 
 			addChild(textContainer);
 			
@@ -118,7 +118,7 @@
 			textContainer.x = mouseX - (currentObject.width / 2);
 			textContainer.y = mouseY - (currentObject.height / 2);
 
-			connectObjects(textContainer.x, textContainer.y); // What does that do?
+			connectScreenSymbolsText(textContainer.x, textContainer.y); // What does that do?
 			
 			//Store Object data for saving and future use
 			var objectData:Array = new Array();
@@ -138,7 +138,7 @@
 
 
 
-		function removeSymbol(e: MouseEvent)
+		function removeScreenSymbol(e: MouseEvent)
 		{
 			//e.target is the object from which the event originated. The original messager
 			//e.currentTarget is the object that last bubbled up the event
@@ -153,7 +153,7 @@
 
 
 		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
-		function dragObject(e: MouseEvent)
+		function dragScreenSymbol(e: MouseEvent)
 		{
 
 			//e.target is the object from which the event originated. The original messager
@@ -166,7 +166,7 @@
 		}
 
 		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
-		function releaseObject(e: MouseEvent)
+		function releaseScreenSymbol(e: MouseEvent)
 		{
 
 			//e.target is the object from which the event originated. The original messager
@@ -179,7 +179,7 @@
 		}
 
 
-		function scrollStage(e: MouseEvent)
+		function panStage(e: MouseEvent)
 		{
 
 			//ExternalInterface.call("alert", "Hello ExternalInterface");
@@ -188,7 +188,7 @@
 
 		}
 
-		function connectObjects(x, y)
+		function connectScreenSymbolsText(x, y)
 		{
 
 			var my_shape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
@@ -201,12 +201,12 @@
 			
 			addChild(my_shape);
 
-			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
+			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
 
 		}
 
 
-		function lineStart(e: MouseEvent):void
+		function ruleLineStart(e: MouseEvent):void
 		{
 
 			debugTextField.appendText("Line Started ");
@@ -214,20 +214,15 @@
 			
 			// Find out which symbol is underneath here
 			
-			checkMouseEventTrail(e);
-			
-			
+			findObjectsUnderMouse(e);
 			
 			a[0]=mouseX;
 			a[1]=mouseY;
 
-
 		}
 		
 		
-		
-		
-		private function checkMouseEventTrail ($e:MouseEvent):void
+		private function findObjectsUnderMouse ($e:MouseEvent):void
 		{
 
 			var pt:Point = new Point (mouseX, mouseY);
@@ -250,7 +245,7 @@
 
 
 
-		function lineStop(e: MouseEvent):void
+		function ruleLineStop(e: MouseEvent):void
 		{
 
 			var b:Array = new Array();
@@ -258,7 +253,7 @@
 			b[0]=mouseX;
 			b[1]=mouseY;
 
-			connectObjects(a,b);
+			connectScreenSymbolsText(a,b);
 			debugTextField.appendText("Line Stopped ");
 
 
