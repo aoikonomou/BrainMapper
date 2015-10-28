@@ -10,6 +10,7 @@
 	import flash.ui.Mouse;
 	import flash.display.Shape;
 	import flash.geom.ColorTransform;
+	import flash.geom.Point;
 
 
 	public class BrainMapper extends MovieClip
@@ -71,9 +72,11 @@
 			newTextField.type = TextFieldType.INPUT;//Makes it updatable but you can't type in in. INPUT for that.
 			newTextField.autoSize = "left";
 			newTextField.multiline = true;
+			newTextField.wordWrap= true;
 
 			// Create formatting for the new text box
 			var format1: TextFormat = new TextFormat();
+			format1.color = 0xE2E4E5;
 			format1.size = 18;
 			format1.align = "center";
 			//format1.leftMargin = 30;
@@ -88,16 +91,19 @@
 			var textContainer: Sprite = new Sprite();//Only sprites can be dragged and dropped and MovieClipps. Not text fields
 			textContainer.addChild(newTextField);
 			
-			var textContainerInternalPadding = 20;
+			var textContainerInternalPadding = 30;
 
 
 			// To size the container sprite we need to put some graphics in it first for some reason.
 
-			textContainer.graphics.beginFill(0x0000FF, .4); // blue, .4 opacity ;
+			textContainer.graphics.beginFill(0x7F8080, 1); // Grey, .4 opacity ;
 			
-			textContainer.graphics.drawRect(0, 0, 
+//rect.graphics.drawRoundRect(0, 0, 100, 100, 25, 25)			
+			
+			textContainer.graphics.drawRoundRect(0, 0, 
 			textContainerInternalPadding+newTextField.width,
-			textContainerInternalPadding+newTextField.height
+			textContainerInternalPadding+newTextField.height,
+			15,15
 			);// (x spacing, y spacing, width, height)
 			
 			textContainer.graphics.endFill();
@@ -203,17 +209,14 @@
 		var my_shape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
 
 
-		my_shape.graphics.lineStyle(4, 0xFF0000, 1);
+		my_shape.graphics.lineStyle(4, 0x7F8080, 1);
 		// x=thickness, y=colour, z= opacity;
 		my_shape.graphics.moveTo(x[0], x[1]);
 		my_shape.graphics.lineTo(y[0], y[1]);
-		my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
-
-
-
+		
 		addChild(my_shape);
 
-
+my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeSymbol);
 
 	}
 
@@ -224,12 +227,41 @@
 		debugTextField.appendText("Line Started ");
 
 		
+		// Find out which symbol is underneath here
+		
+		checkMouseEventTrail(e);
+		
+		
 		
 		a[0]=mouseX;
 		a[1]=mouseY;
 
 
 	}
+	
+	
+	
+	
+private function checkMouseEventTrail ($e:MouseEvent):void
+{
+ 
+        var pt:Point = new Point (mouseX, mouseY);
+	var objects:Array = this.getObjectsUnderPoint (pt); 
+	for (var i:int = 0; i< objects.length; i++)
+	{
+		trace(">>", objects[i].name,": ",objects[i]);
+	}
+ 
+	var p:* = $e.target; //$ in front of a variable specifies a static variable. Static variables are usually used to count how many times a class has been instantiated. If you declare a variable, but do not declare its data type, the default data type * will apply, which actually means that the variable is untyped. If you also do not initialize an untyped variable with a value, its default value is undefined .
+	while (p)
+	{
+		trace(">>", p.name,": ",p);
+		p = p.parent;
+	}
+};	
+	
+	
+	
 	function lineStop(e: MouseEvent):void
 	{
 		
