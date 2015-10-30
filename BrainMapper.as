@@ -46,7 +46,7 @@
 			debugTextField.text = "Debug Text Box";
 			debugTextField.border = true;
 			debugTextField.width = 350;
-			debugTextField.height = 100;
+			debugTextField.height = 400;
 			debugTextField.x = 0;
 			debugTextField.y = 0;
 			debugTextField.wordWrap = true;
@@ -86,7 +86,7 @@
 				//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
 				//format1.bottomMargin = 30;
 
-				newTextField.setTextFormat(format1);
+				newTextField.setTextFormat(format1); //Set the format to the degug text field you made.
 
 				// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.);
 
@@ -127,21 +127,44 @@
 				textContainer.x = mouseX - (currentObject.width / 2);
 				textContainer.y = mouseY - (currentObject.height / 2);
 				
-				//Store Object data for saving and future use
-				var objectData:Array = new Array();
+				storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
 				
-				objectData.push(textContainer);
-				objectData.push(newTextField.text);
-				objectData.push(textContainer.x);
-				objectData.push(textContainer.y);
-				
-				saveList.push(objectData);
-				trace(saveList[saveList.length-1][2]);
-				
-				trace("saveList Array size after addition is: ");
-				trace(saveList.length);
 			}	
 		}
+
+
+
+		function storeSymboltoMemory(object, time, text, x, y, width, height):void{
+
+		//Store Object data for saving and future use
+			var objectData:Array = new Array();
+				
+			objectData.push(object);
+			objectData.push(time);
+			objectData.push(text);
+			objectData.push(x);
+			objectData.push(y);
+			objectData.push(width);
+			objectData.push(height);
+
+			saveList.push(objectData);
+			trace(saveList[saveList.length-1][2]);
+				
+			debugMessage("saveList Array size after addition is: ");
+			debugMessage(saveList.length);
+
+
+			for each (var item in objectData){
+
+				for each (var innerItem in objectData[item]){
+				
+				debugMessage(objectData[item][innerItem]);
+				debugMessage("bla");
+
+				}
+			}
+		}
+
 
 
 		function removeScreenSymbol(e: MouseEvent)
@@ -151,8 +174,8 @@
 
 			findObjectsUnderMouse(e);
 			removeChild(e.target as DisplayObject);
-			debugMessage(String(e.target));
-			debugMessage(" should be deleted");
+			//debugMessage();
+			debugMessage(String(e.target) + " should be deleted");
 			
 			//symbolArray.pop();
 		}
@@ -196,16 +219,18 @@
 		function connectScreenSymbolsText(x, y)
 		{
 
-			var my_shape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
+			var myShape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
+			var myShapeContainer: Sprite = new Sprite();//Shape class is the least memory intensive one from sprite and MovieClip
 
-			my_shape.graphics.lineStyle(4, 0x7F8080, 1); // x=thickness, y=colour, z= opacity;
-			my_shape.graphics.moveTo(x[0], x[1]);
-			my_shape.graphics.lineTo(y[0], y[1]);
+			myShape.graphics.lineStyle(8, 0x7F8080, 1); // x=thickness, y=colour, z= opacity;
+			myShape.graphics.moveTo(x[0], x[1]);
+			myShape.graphics.lineTo(y[0], y[1]);
 			
-			addChild(my_shape);
+			myShapeContainer.addChild(myShape);  // If you want to right click on your line it needs to be inside a sprite. Shape won't do it.
+			addChild(myShapeContainer);
 			debugMessage("Line symbol added");
 
-			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
+			myShapeContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
 
 		}
 
@@ -213,7 +238,7 @@
 		function ruleLineStart(e: MouseEvent):void
 		{
 
-			debugMessage("Line Started ");
+			debugMessage("Line Started");
 			
 			// Find out which symbol is underneath here
 			
@@ -260,6 +285,8 @@
 
 				b[0]=mouseX;
 				b[1]=mouseY;
+
+
 
 				connectScreenSymbolsText(a,b);
 				debugMessage("Line Stopped");
