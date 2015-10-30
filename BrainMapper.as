@@ -153,7 +153,6 @@
 			debugMessage("saveList Array size after addition is: ");
 			debugMessage(saveList.length);
 
-
 			for each (var item in objectData){
 
 				for each (var innerItem in objectData[item]){
@@ -173,7 +172,7 @@
 			//e.currentTarget is the object that last bubbled up the event
 
 			findObjectsUnderMouse(e);
-			removeChild(e.target as DisplayObject);
+			removeChild(e.currentTarget as DisplayObject);
 			//debugMessage();
 			debugMessage(String(e.target) + " should be deleted");
 			
