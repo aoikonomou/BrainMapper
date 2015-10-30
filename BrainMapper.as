@@ -45,11 +45,13 @@
 			addChild(debugTextField);
 			debugTextField.text = "Debug Text Box";
 			debugTextField.border = true;
-			debugTextField.width = 200;
-			debugTextField.height = 200;
+			debugTextField.width = 350;
+			debugTextField.height = 100;
 			debugTextField.x = 0;
 			debugTextField.y = 0;
 			debugTextField.wordWrap = true;
+			debugTextField.multiline=true;
+			
 		}
 
 
@@ -57,90 +59,89 @@
 		{
 
 			//I suppose I need to test what is under the mouse here. If there is anything else other than the stage then do not create a new symbol, otherwise do
-			if(findObjectsUnderMouse(e)){debugTextField.appendText("My function is working yeyeye!");
-			
+			if(findObjectsUnderMouse(e))
 
-			// Create new textbox object
-			var newTextField: TextField = new TextField();
-			newTextField.text = "blabla";
-			newTextField.border = true;
-			newTextField.width = 80;
-			newTextField.height = 20;
-			newTextField.type = TextFieldType.INPUT;//Makes it updatable but you can't type in in. INPUT for that.
-			newTextField.autoSize = "left";
-			newTextField.multiline = true;
-			newTextField.wordWrap= true;
+			{
 
-			// Create formatting for the new text box
-			var format1: TextFormat = new TextFormat();
-			format1.color = 0xE2E4E5;
-			format1.size = 18;
-			format1.align = "center";
-			//format1.leftMargin = 30;
-			//format1.rightMargin = 30;
-			//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
-			//format1.bottomMargin = 30;
+				debugMessage("I am not over an existing text box");
 
-			newTextField.setTextFormat(format1);
+				// Create new textbox object
+				var newTextField: TextField = new TextField();
+				newTextField.text = "blabla";
+				newTextField.border = true;
+				newTextField.width = 80;
+				newTextField.height = 20;
+				newTextField.type = TextFieldType.INPUT;//Makes it updatable but you can't type in in. INPUT for that.
+				newTextField.autoSize = "left";
+				newTextField.multiline = true;
+				newTextField.wordWrap= true;
 
-			// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.);
+				// Create formatting for the new text box
+				var format1: TextFormat = new TextFormat();
+				format1.color = 0xE2E4E5;
+				format1.size = 18;
+				format1.align = "center";
+				//format1.leftMargin = 30;
+				//format1.rightMargin = 30;
+				//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
+				//format1.bottomMargin = 30;
 
-			var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
-			textContainer.addChild(newTextField);
-			
-			var textContainerInternalPadding = 30;
+				newTextField.setTextFormat(format1);
 
-			// To size the container sprite we need to put some graphics in it first for some reason.
+				// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.);
 
-			textContainer.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
-			
-			textContainer.graphics.drawRoundRect(0, 0, 
-				textContainerInternalPadding+newTextField.width,
-				textContainerInternalPadding+newTextField.height,
-				15,15
-			);// (x spacing, y spacing, width, height)
-			textContainer.graphics.endFill();
+				var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
+				textContainer.addChild(newTextField);
+				
+				var textContainerInternalPadding = 30;
 
-			newTextField.x = textContainerInternalPadding / 2; //Padding value is split in 2 to create equal space left and right of the text box
-			newTextField.y = textContainerInternalPadding / 2;
+				// To size the container sprite we need to put some graphics in it first for some reason.
 
-			// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
-			textFieldArray.push(textContainer);
-			var currentObject = textFieldArray[textFieldArray.length - 1];
+				textContainer.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+				
+				textContainer.graphics.drawRoundRect(0, 0, 
+					textContainerInternalPadding+newTextField.width,
+					textContainerInternalPadding+newTextField.height,
+					15,15
+				);// (x spacing, y spacing, width, height)
+				textContainer.graphics.endFill();
+
+				newTextField.x = textContainerInternalPadding / 2; //Padding value is split in 2 to create equal space left and right of the text box
+				newTextField.y = textContainerInternalPadding / 2;
+
+				// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
+				textFieldArray.push(textContainer);
+				var currentObject = textFieldArray[textFieldArray.length - 1];
 
 
-			// Allow textContainer to be deleted and moved as well as connected with a line through mouse clicks.
-			textContainer.addEventListener(MouseEvent.MOUSE_DOWN, ruleLineStart);
-			textContainer.addEventListener(MouseEvent.MOUSE_UP, ruleLineStop);
-			textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
-			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragScreenSymbol);
-			textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseScreenSymbol);
+				// Allow textContainer to be deleted and moved as well as connected with a line through mouse clicks.
+				textContainer.addEventListener(MouseEvent.MOUSE_DOWN, ruleLineStart);
+				textContainer.addEventListener(MouseEvent.MOUSE_UP, ruleLineStop);
+				textContainer.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
+				textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, dragScreenSymbol);
+				textContainer.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, releaseScreenSymbol);
 
-			addChild(textContainer);
-			
-			//Creates the text container where the user clicked on the stage
-			textContainer.x = mouseX - (currentObject.width / 2);
-			textContainer.y = mouseY - (currentObject.height / 2);
-
-			connectScreenSymbolsText(textContainer.x, textContainer.y); // What does that do?
-			
-			//Store Object data for saving and future use
-			var objectData:Array = new Array();
-			
-			objectData.push(textContainer);
-			objectData.push(newTextField.text);
-			objectData.push(textContainer.x);
-			objectData.push(textContainer.y);
-			
-			saveList.push(objectData);
-			trace(saveList[saveList.length-1][2]);
-			
-			trace("saveList Array size after addition is: ");
-			trace(saveList.length);
+				addChild(textContainer);
+				
+				//Creates the text container where the user clicked on the stage
+				textContainer.x = mouseX - (currentObject.width / 2);
+				textContainer.y = mouseY - (currentObject.height / 2);
+				
+				//Store Object data for saving and future use
+				var objectData:Array = new Array();
+				
+				objectData.push(textContainer);
+				objectData.push(newTextField.text);
+				objectData.push(textContainer.x);
+				objectData.push(textContainer.y);
+				
+				saveList.push(objectData);
+				trace(saveList[saveList.length-1][2]);
+				
+				trace("saveList Array size after addition is: ");
+				trace(saveList.length);
+			}	
 		}
-
-		}
-
 
 
 		function removeScreenSymbol(e: MouseEvent)
@@ -149,7 +150,8 @@
 			//e.currentTarget is the object that last bubbled up the event
 
 			removeChild(e.target as DisplayObject);
-			debugTextField.appendText("I should be deleted");
+			debugMessage(String(e.target));
+			debugMessage(" should be deleted");
 			
 			//symbolArray.pop();
 		}
@@ -166,7 +168,7 @@
 
 			e.target.startDrag();
 
-			debugTextField.appendText("Middle button pressed ");
+			debugMessage("Middle button pressed ");
 
 		}
 
@@ -179,7 +181,6 @@
 
 			e.target.stopDrag();
 
-			debugTextField.appendText("Middle button pressed ");
 
 		}
 
@@ -190,7 +191,6 @@
 			//ExternalInterface.call("alert", "Hello ExternalInterface");
 			//symbolArray[1].x = 0;
 
-
 		}
 
 		function connectScreenSymbolsText(x, y)
@@ -198,13 +198,12 @@
 
 			var my_shape: Shape = new Shape();//Shape class is the least memory intensive one from sprite and MovieClip
 
-
-			my_shape.graphics.lineStyle(4, 0x7F8080, 1);
-			// x=thickness, y=colour, z= opacity;
+			my_shape.graphics.lineStyle(4, 0x7F8080, 1); // x=thickness, y=colour, z= opacity;
 			my_shape.graphics.moveTo(x[0], x[1]);
 			my_shape.graphics.lineTo(y[0], y[1]);
 			
 			addChild(my_shape);
+			debugMessage("Line symbol " + my_shape + "added");
 
 			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
 
@@ -214,8 +213,7 @@
 		function ruleLineStart(e: MouseEvent):void
 		{
 
-			debugTextField.appendText("Line Started ");
-
+			debugMessage("Line Started ");
 			
 			// Find out which symbol is underneath here
 			
@@ -247,30 +245,33 @@
 
 			if (objects.length<2){
 				return true; }
-				
+
 				else {
 					return false;
 				}
-			
+
+			}
 
 
-		}
+			function ruleLineStop(e: MouseEvent):void
+			{
+
+				var b:Array = new Array();
+
+				b[0]=mouseX;
+				b[1]=mouseY;
+
+				connectScreenSymbolsText(a,b);
+				debugMessage("Line Stopped");
 
 
+			}
 
+			function debugMessage(message):void{
 
-		function ruleLineStop(e: MouseEvent):void
-		{
+				debugTextField.appendText("\n"+ message);
 
-			var b:Array = new Array();
-
-			b[0]=mouseX;
-			b[1]=mouseY;
-
-			connectScreenSymbolsText(a,b);
-			debugTextField.appendText("Line Stopped ");
-
+			}
 
 		}
 	}
-}
