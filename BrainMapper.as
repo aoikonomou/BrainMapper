@@ -149,6 +149,7 @@
 			//e.target is the object from which the event originated. The original messager
 			//e.currentTarget is the object that last bubbled up the event
 
+			findObjectsUnderMouse(e);
 			removeChild(e.target as DisplayObject);
 			debugMessage(String(e.target));
 			debugMessage(" should be deleted");
@@ -157,7 +158,6 @@
 		}
 
 		
-
 
 		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
 		function dragScreenSymbol(e: MouseEvent)
@@ -203,7 +203,7 @@
 			my_shape.graphics.lineTo(y[0], y[1]);
 			
 			addChild(my_shape);
-			debugMessage("Line symbol " + my_shape + "added");
+			debugMessage("Line symbol added");
 
 			my_shape.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, removeScreenSymbol);
 
