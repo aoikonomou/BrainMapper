@@ -11,19 +11,22 @@
 	import flash.display.Shape;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
-	import Model;
+
+	// import model;
+	// import view;
+	// import controller;
+
+
 
 
 	public class BrainMapper extends MovieClip
 	{
 
-		
-		var myModel:Model = new Model();
-
 		var textFieldArray: Array = new Array();// Holds all textfields the user creates
 		var debugTextField: TextField = new TextField();//To display debug info in
 
-		
+		// Notes to self. I need to track object position, creation time, current text and history amongst other things.
+		var saveList: Array = new Array();
 		
 		var a:Array = new Array(); // Point A x/y coordinates of connecting line
 		var b:Array = new Array(); // Point B of connecting line
@@ -41,6 +44,9 @@
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
+
+		
+		// View Class
 
 		function createDebugInterface():void
 		{
@@ -130,12 +136,42 @@
 				textContainer.x = mouseX - (currentObject.width / 2);
 				textContainer.y = mouseY - (currentObject.height / 2);
 				
-				myModel.storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
+				storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
 				
 			}	
 		}
 
 
+
+		function storeSymboltoMemory(object, time, text, x, y, width, height):void{
+
+		//Store Object data for saving and future use
+			var objectData:Array = new Array();
+				
+			objectData.push(object);
+			objectData.push(time);
+			objectData.push(text);
+			objectData.push(x);
+			objectData.push(y);
+			objectData.push(width);
+			objectData.push(height);
+
+			saveList.push(objectData);
+			trace(saveList[saveList.length-1][2]);
+				
+			debugMessage("saveList Array size after addition is: ");
+			debugMessage(saveList.length);
+
+			for each (var item in objectData){
+
+				for each (var innerItem in objectData[item]){
+				
+				debugMessage(objectData[item][innerItem]);
+				debugMessage("bla");
+
+				}
+			}
+		}
 
 
 

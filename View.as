@@ -11,36 +11,30 @@
 	import flash.display.Shape;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
-	import Model;
+
+	// import model;
+	// import view;
+	// import controller;
 
 
-	public class BrainMapper extends MovieClip
+
+
+	public class View extends MovieClip
 	{
 
-		
-		var myModel:Model = new Model();
 
-		var textFieldArray: Array = new Array();// Holds all textfields the user creates
-		var debugTextField: TextField = new TextField();//To display debug info in
-
-		
-		
-		var a:Array = new Array(); // Point A x/y coordinates of connecting line
-		var b:Array = new Array(); // Point B of connecting line
-
-		public function BrainMapper()
+		public function View()
 		{
 
-			// Initialise other things
-			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
-
-			createDebugInterface();// To put debug info in
+		
 
 		}
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
+
+		
+		// View Class
 
 		function createDebugInterface():void
 		{
@@ -130,13 +124,10 @@
 				textContainer.x = mouseX - (currentObject.width / 2);
 				textContainer.y = mouseY - (currentObject.height / 2);
 				
-				myModel.storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
+				storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
 				
 			}	
 		}
-
-
-
 
 
 		function removeScreenSymbol(e: MouseEvent)
