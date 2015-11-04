@@ -12,21 +12,16 @@
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import Model;
+	import View;
 
 
 	public class BrainMapper extends MovieClip
 	{
 
 		
-		var myModel:Model = new Model();
+		var myModel:Model = new Model(); // Create model object
+		var myView:View = new View(); //Create view object
 
-		var textFieldArray: Array = new Array();// Holds all textfields the user creates
-		var debugTextField: TextField = new TextField();//To display debug info in
-
-		
-		
-		var a:Array = new Array(); // Point A x/y coordinates of connecting line
-		var b:Array = new Array(); // Point B of connecting line
 
 		public function BrainMapper()
 		{
@@ -35,27 +30,14 @@
 			stage.doubleClickEnabled = true;
 			stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
 
-			createDebugInterface();// To put debug info in
+			myView.createDebugInterface();// To put debug info in
 
 		}
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
 
-		function createDebugInterface():void
-		{
-
-			addChild(debugTextField);
-			debugTextField.text = "Debug Text Box";
-			debugTextField.border = true;
-			debugTextField.width = 350;
-			debugTextField.height = 400;
-			debugTextField.x = 0;
-			debugTextField.y = 0;
-			debugTextField.wordWrap = true;
-			debugTextField.multiline=true;
-			
-		}
+		
 
 
 		function addScreenSymbolText(e: MouseEvent)
@@ -113,8 +95,8 @@
 				newTextField.y = textContainerInternalPadding / 2;
 
 				// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
-				textFieldArray.push(textContainer);
-				var currentObject = textFieldArray[textFieldArray.length - 1];
+				myModel.textFieldArray.push(textContainer);
+				var currentObject = myModel.textFieldArray[myModel.textFieldArray.length - 1];
 
 
 				// Allow textContainer to be deleted and moved as well as connected with a line through mouse clicks.
@@ -216,8 +198,8 @@
 			
 			findObjectsUnderMouse(e);
 			
-			a[0]=mouseX;
-			a[1]=mouseY;
+			myModel.a[0]=mouseX;
+			myModel.a[1]=mouseY;
 
 		}
 		
@@ -260,7 +242,7 @@
 
 
 
-				connectScreenSymbolsText(a,b);
+				connectScreenSymbolsText(myModel.a,b);
 				debugMessage("Line Stopped");
 
 
@@ -268,7 +250,7 @@
 
 			function debugMessage(message):void{
 
-				debugTextField.appendText("\n"+ message);
+				myView.debugTextField.appendText("\n"+ message);
 
 			}
 
