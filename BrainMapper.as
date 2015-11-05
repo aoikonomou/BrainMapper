@@ -1,4 +1,8 @@
-﻿package 
+﻿// BrainMapper Software ver 0.1
+// Using MVC model. This class (Main) also acts as the controller
+// Application implements SRI theory
+
+package 
 {
 
 	import flash.display.MovieClip;
@@ -14,14 +18,11 @@
 	import Model;
 	import View;
 
-
 	public class BrainMapper extends MovieClip
 	{
 
-		
 		var myModel:Model = new Model(); // Create model object
 		var myView:View = new View(); //Create view object
-
 
 		public function BrainMapper()
 		{
@@ -29,15 +30,13 @@
 			// Initialise other things
 			stage.doubleClickEnabled = true;
 			stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
+			addChild(myView);
 
 			myView.createDebugInterface();// To put debug info in
 
 		}
 
-
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
-
-		
 
 
 		function addScreenSymbolText(e: MouseEvent)
@@ -48,51 +47,7 @@
 
 			{
 
-				debugMessage("I am not over an existing text box");
-
-				// Create new textbox object
-				var newTextField: TextField = new TextField();
-				newTextField.text = "blabla";
-				newTextField.border = true;
-				newTextField.width = 80;
-				newTextField.height = 20;
-				newTextField.type = TextFieldType.INPUT;//Makes it updatable but you can't type in in. INPUT for that.
-				newTextField.autoSize = "left";
-				newTextField.multiline = true;
-				newTextField.wordWrap= true;
-
-				// Create formatting for the new text box
-				var format1: TextFormat = new TextFormat();
-				format1.color = 0xE2E4E5;
-				format1.size = 18;
-				format1.align = "center";
-				//format1.leftMargin = 30;
-				//format1.rightMargin = 30;
-				//format1.topMargin = 30; // Don't exist as functions apparently. This one and the one below
-				//format1.bottomMargin = 30;
-
-				newTextField.setTextFormat(format1); //Set the format to the degug text field you made.
-
-				// Create a Sprite container for the textfield above so you can drag it around (not draggable by default, has to be encapsulated in sprite or MovieClip etc.);
-
-				var textContainer: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
-				textContainer.addChild(newTextField);
-				
-				var textContainerInternalPadding = 30;
-
-				// To size the container sprite we need to put some graphics in it first for some reason.
-
-				textContainer.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
-				
-				textContainer.graphics.drawRoundRect(0, 0, 
-					textContainerInternalPadding+newTextField.width,
-					textContainerInternalPadding+newTextField.height,
-					15,15
-				);// (x spacing, y spacing, width, height)
-				textContainer.graphics.endFill();
-
-				newTextField.x = textContainerInternalPadding / 2; //Padding value is split in 2 to create equal space left and right of the text box
-				newTextField.y = textContainerInternalPadding / 2;
+				var textContainer = myView.testTextBox();
 
 				// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
 				myModel.textFieldArray.push(textContainer);
@@ -112,12 +67,10 @@
 				textContainer.x = mouseX - (currentObject.width / 2);
 				textContainer.y = mouseY - (currentObject.height / 2);
 				
-				myModel.storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
+			//	myModel.storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
 				
 			}	
 		}
-
-
 
 
 
@@ -134,7 +87,6 @@
 			//symbolArray.pop();
 		}
 
-		
 
 		// Wow, this works in browser but not in Flash Test. I wonder if it works when published.
 		function dragScreenSymbol(e: MouseEvent)
@@ -157,7 +109,6 @@
 			//e.currentTarget is the object that last bubbled up the event
 
 			e.target.stopDrag();
-
 
 		}
 
@@ -228,7 +179,6 @@
 				else {
 					return false;
 				}
-
 			}
 
 
@@ -239,8 +189,6 @@
 
 				b[0]=mouseX;
 				b[1]=mouseY;
-
-
 
 				connectScreenSymbolsText(myModel.a,b);
 				debugMessage("Line Stopped");
@@ -253,6 +201,5 @@
 				myView.debugTextField.appendText("\n"+ message);
 
 			}
-
 		}
 	}
