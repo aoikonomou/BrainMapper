@@ -23,12 +23,10 @@
 		{
 
 
-
 		}
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
-
 
 		public function createDebugInterface():void
 		{
@@ -103,6 +101,6 @@
 
 		}
 
-
+		
 	}
 }
