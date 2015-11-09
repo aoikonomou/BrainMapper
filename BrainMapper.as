@@ -151,7 +151,7 @@ package
 		}
 		
 		
-		private function findObjectsUnderMouse ($e:MouseEvent)
+		private function findObjectsUnderMouse ($e:MouseEvent):int
 		{
 
 			var pt:Point = new Point (mouseX, mouseY);
@@ -160,6 +160,7 @@ package
 			for (var i:int = 0; i< objects.length; i++)
 			{
 				trace(">>", objects[i].name,": ",objects[i]);
+				trace(">>",  typeof(objects[i]),": ",objects[i]);
 			}
 
 			var p:* = $e.target; //$ in front of a variable specifies a static variable. Static variables are usually used to count how many times a class has been instantiated. If you declare a variable, but do not declare its data type, the default data type * will apply, which actually means that the variable is untyped. If you also do not initialize an untyped variable with a value, its default value is undefined .
@@ -170,10 +171,10 @@ package
 			}
 
 			if (objects.length<2){
-				return true; }
+				return 1; }
 
 				else {
-					return false;
+					return 0;
 				}
 			}
 
