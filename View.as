@@ -101,6 +101,81 @@
 
 		}
 
+
+		function createCreationInterface():void{
+
+
+			var creationInterface: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
+			//textContainer.addChild(creationInterface);
+			
+			var creationInterfaceInternalPadding = 30;
+
+			// To size the container sprite we need to put some graphics in it first for some reason. We 'll put three boxes of different colour.
+
+
+			var option1Box: Sprite = new Sprite();
+			var option2Box: Sprite = new Sprite();
+			var option3Box: Sprite = new Sprite();
+
+
+			//Interface box 
+
+
+			creationInterface.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			
+			creationInterface.graphics.drawRoundRect(0, 0, 
+				creationInterfaceInternalPadding+creationInterface.width,
+				creationInterfaceInternalPadding+creationInterface.height,
+				15,15
+			);// (x spacing, y spacing, width, height)
+			creationInterface.graphics.endFill();
+
+			creationInterface.x = creationInterfaceInternalPadding / 2; //Padding value is split in 2 to create equal space left and right of the text box
+			creationInterface.y = creationInterfaceInternalPadding / 2;
+
+			// The code below is repeated and needs to be optimised
+			//Option box 1
+
+			creationInterface.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			
+			creationInterface.graphics.drawRoundRect(0, 0, 
+				creationInterfaceInternalPadding+creationInterface.width,
+				creationInterfaceInternalPadding+creationInterface.height,
+				15,15
+			);// (x spacing, y spacing, width, height)
+			creationInterface.graphics.endFill();
+
+
+			// Option box 2
+			creationInterface.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			
+			creationInterface.graphics.drawRoundRect(0, 0, 
+				creationInterfaceInternalPadding+creationInterface.width,
+				creationInterfaceInternalPadding+creationInterface.height,
+				15,15
+			);// (x spacing, y spacing, width, height)
+			creationInterface.graphics.endFill();
+
+			// Option box 3
+			creationInterface.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			
+			creationInterface.graphics.drawRoundRect(0, 0, 
+				creationInterfaceInternalPadding+creationInterface.width,
+				creationInterfaceInternalPadding+creationInterface.height,
+				15,15
+			);// (x spacing, y spacing, width, height)
+			creationInterface.graphics.endFill();
+
+
+
+
+			addChild(option1Box);
+			addChild(option2Box);
+			addChild(option3Box);
+
+
+		}
+
 		
 	}
 }
