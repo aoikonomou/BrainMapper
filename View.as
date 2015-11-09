@@ -59,23 +59,20 @@
 		public function updateDebugInterfaceText(message):void{
 
 
-
 		//	stage.debugTextField.appendText(message);
-			
-
 
 
 		}
 
 
 
-		public function createCreationInterface():void{
+		public function creationInterface():void{
 
 
-			var creationInterface: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
+			var myCreationInterface: Sprite = new Sprite(); //Only sprites can be dragged and dropped and MovieClipps. Not text fields
 			//textContainer.addChild(creationInterface);
 			
-			var creationInterfaceInternalPadding = 30;
+			var myCreationInterfaceInternalPadding = 30;
 
 			// To size the container sprite we need to put some graphics in it first for some reason. We 'll put three boxes of different colour.
 
@@ -84,14 +81,19 @@
 			var option2Box: Sprite = new Sprite();
 			var option3Box: Sprite = new Sprite();
 
+			createGraphicsShape(1, option1Box, 0,0, 1, "red", option1Box.width+30, option1Box.width+30, myCreationInterfaceInternalPadding); // (graphicType, object, xLoc, yLoc, opacity, colour, shapeWidth, shapeHeight, padding
+			createGraphicsShape(1, option2Box, 0,50, 1, "blue", option2Box.width+30, option2Box.width+30, myCreationInterfaceInternalPadding); // (graphicType, object, xLoc, yLoc,opacity, colour, shapeWidth, shapeHeight, padding
+			createGraphicsShape(1, option3Box, 0,100, 1, "green", option3Box.width+30, option3Box.width+30, myCreationInterfaceInternalPadding); // (graphicType, object, xLoc, yLoc,opacity, colour, shapeWidth, shapeHeight, padding
+
+
 
 			//Interface box 
 
-
-			//createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding);
-
-
+			
 			addChild(option1Box);
+			addChild(option2Box);
+			addChild(option3Box);
+
 			
 
 		}
@@ -139,7 +141,7 @@
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// To size the container sprite we need to put some graphics in it first for some reason.
 
-			//createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding); // (graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding
+			createGraphicsShape(1, textContainer, 0,0, 1, "purple", textContainer.width+30, textContainer.width+30, textContainerInternalPadding); // (graphicType, object, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding
 
 
 			return textContainer;
@@ -149,26 +151,25 @@
 
 		
 
-/*
-		function createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding):void{
+
+		function createGraphicsShape(graphicType, object, xLoc, yLoc,opacity, colour, shapeWidth, shapeHeight, padding):void{
 
 			
-			switch (myVariable){
+			switch (graphicType){
 
 			case 1:
 			trace("case1");
 
 
-			object.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			object.graphics.beginFill(colours(colour), 1); // Grey, 1 opacity
 			
-			object.graphics.drawRoundRect(0, 0, 
+			object.graphics.drawRoundRect(xLoc, yLoc, 
 				padding+object.width,
 				padding+object.height,
 				shapeWidth,shapeHeight
 			);// (x spacing, y spacing, width, height)
 			object.graphics.endFill();
 
-			return
 
 			return;
 			break;
@@ -190,7 +191,51 @@
 		
 
 		}
-*/
+		
+		
+		function colours(colour):int{
+			
+			var red = "#FF3005";
+			var yellow = "#FFF90A";
+			var green = "#51FF02";
+			var lightBlue = "#0CFAFF";
+			var blue = "#004EFA";
+			var purple = "#E200F3";
+			var lightGrey = "#BDBDBD";
+			var grey = "#494949";
+			
+			switch (colour) {
+				
+				case "red":
+					return parseInt(red);
+					break;
+				case yellow:
+					return yellow;
+				break;
+				case green:
+					return green;
+					break;
+				case lightBlue:
+					return lightBlue;
+				break;
+				case blue:
+					return blue;
+				break;
+				case purple:
+					return purple;
+				break;
+				case lightGrey:
+					return lightGrey;
+				break;
+				case grey:
+					return grey;
+				break;
+				
+				}
+			
+				return 0; //If the above didn't work
+				
+			}
 		
 	}
 }
