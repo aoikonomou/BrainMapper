@@ -40,9 +40,6 @@ package
 			// Let's beging by making a control sprite in the view. It will have 3 other sprites in it. Clicking on any of those will change the drawing mode.
 
 
-
-
-
 		}
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
@@ -56,7 +53,7 @@ package
 
 			{
 
-				var textContainer = myView.testTextBox();
+				var textContainer = myView.Symbol();
 
 				// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
 				myModel.textFieldArray.push(textContainer);
