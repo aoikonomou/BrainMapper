@@ -47,9 +47,7 @@ package
 
 				// Keep track of textFields (text containers in fact, later symbols I suppose in an array for addressing and line linkage purposes?)
 				myModel.textFieldArray.push(textContainer);
-				var currentObject = myModel.textFieldArray[myModel.textFieldArray.length - 1];
-
-
+				
 				// Allow textContainer to be deleted and moved as well as connected with a line through mouse clicks.
 				textContainer.addEventListener(MouseEvent.MOUSE_DOWN, ruleLineStart);
 				textContainer.addEventListener(MouseEvent.MOUSE_UP, ruleLineStop);
@@ -59,10 +57,10 @@ package
 
 				addChild(textContainer);
 				
-				//Creates the text container where the user clicked on the stage
+				//Puts the text container where the user clicked on the stage
+				var currentObject = myModel.textFieldArray[myModel.textFieldArray.length - 1]; // Get the current position of the last created object to use it below for screen placement
 				textContainer.x = mouseX - (currentObject.width / 2);
 				textContainer.y = mouseY - (currentObject.height / 2);
-				
 			//	myModel.storeSymboltoMemory(textContainer,0,newTextField.text,textContainer.x,textContainer.y,textContainer.width,textContainer.height);
 				
 			}	
@@ -77,9 +75,7 @@ package
 
 			findObjectsUnderMouse(e);
 			removeChild(e.currentTarget as DisplayObject);
-			//debugMessage();
 			debugMessage(String(e.target) + " should be deleted");
-			
 			//symbolArray.pop();
 		}
 
@@ -92,7 +88,6 @@ package
 			//e.currentTarget is the object that last bubbled up the event
 
 			e.target.startDrag();
-
 			debugMessage("Middle button pressed ");
 
 		}
