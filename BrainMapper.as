@@ -29,6 +29,14 @@ package
 
 			addChild(myView);
 			myView.stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
+
+			// Instead of adding a screen symbol, check the current mode of insertion. If symbol, add symbol, if rule, add rule, if connection connection, if label, label, if grouping, grouping
+			// Can I automate any of the above so that they don't require user input specifically? Click on screen creates symbol or rule. Can't automate that. Click on symbol creates link_start. Click on space after that creates one ended rule (linked with first item)
+			// If you clicked on another symbol though it would connect (and get that symbol as the starting point now for future connections). If you clicked on a rule, it would connect to either any objects connected at the end of that rule or ....hey, yes you have all the ghost symbols in there as well. Hmmmm, back to prototyping.
+
+
+
+
 		}
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
