@@ -1,4 +1,4 @@
-// BrainMapper Software ver 0.1
+﻿// BrainMapper Software ver 0.1
 // Using MVC model. This class (Main) also acts as the controller
 // Application implements SRI theory
 
@@ -27,24 +27,14 @@ package
 		public function BrainMapper()
 		{
 
-
-			//Initialise view interface
-			stage.doubleClickEnabled = true;
-			stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
 			addChild(myView);
-
-			myView.createDebugInterface();// To put debug info in
-
-			// I need to create the options menu for every item selected on the screen. That's a job in itself.
-			// I need to create the interface that allows you to select what you want to do. The point is speed so I might not use that interface later on but I need the functionality.
-			// Let's beging by making a control sprite in the view. It will have 3 other sprites in it. Clicking on any of those will change the drawing mode.
-
-
+			myView.stage.addEventListener(MouseEvent.CLICK, addScreenSymbolText);
 		}
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
 
 
+		
 		function addScreenSymbolText(e: MouseEvent)
 		{
 
@@ -204,8 +194,11 @@ package
 
 			function debugMessage(message):void{
 
-				myView.debugTextField.appendText("\n"+ message);
+				//myView.updateDebugInterfaceText(message);
 
 			}
+			
+
+			
 		}
 	}

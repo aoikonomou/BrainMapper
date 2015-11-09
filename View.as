@@ -17,21 +17,27 @@
 	public class View extends MovieClip
 	{
 
-		var debugTextField: TextField = new TextField(); //To display debug info in
-
 		public function View()
 		{
 
+			trace(stage);
+			//Initialise view interface
+			//stage.doubleClickEnabled = true;  //Doesn't currently work. Do i need to enable it for main stage?
+			var myDebugInterface = createDebugInterface();// To put debug info in
+			addChild(myDebugInterface);
 
 		}
 
 
 		//------------------------------------------- Custom Functions live below this line ----------------------------------------------
 
-		public function createDebugInterface():void
+
+		public function createDebugInterface():TextField
 		{
 
-			stage.addChild(debugTextField);
+			var debugTextField: TextField = new TextField(); //To display debug info in
+
+			
 			debugTextField.text = "Debug Text Box";
 			debugTextField.border = true;
 			debugTextField.width = 350;
@@ -40,9 +46,27 @@
 			debugTextField.y = 0;
 			debugTextField.wordWrap = true;
 			debugTextField.multiline=true;
-			trace("in createDebugInterface function. Working properly");
+
+			//addChild(debugTextField);
+
+			trace("In createDebugInterface function. Working properly");
+
+			return debugTextField;
 			
 		}
+
+
+		public function updateDebugInterfaceText(message):void{
+
+
+
+		//	stage.debugTextField.appendText(message);
+			
+
+
+
+		}
+
 
 
 		public function createCreationInterface():void{
@@ -64,7 +88,7 @@
 			//Interface box 
 
 
-			createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding);
+			//createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding);
 
 
 			addChild(option1Box);
@@ -115,7 +139,7 @@
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// To size the container sprite we need to put some graphics in it first for some reason.
 
-			createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding); // (graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding
+			//createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding); // (graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding
 
 
 			return textContainer;
@@ -125,7 +149,7 @@
 
 		
 
-
+/*
 		function createGraphicsShape(graphicType, xLoc, yLoc,opacity, shapeWidth, shapeHeight, padding):void{
 
 			
@@ -166,7 +190,7 @@
 		
 
 		}
-
+*/
 		
 	}
 }
