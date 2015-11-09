@@ -176,6 +176,20 @@
 
 		}
 
+
+		function createGraphicsShape(object, xLoc, yLoc, shapeWidth, shapeHeight, padding):void{
+
+			object.graphics.beginFill(0x7F8080, 1); // Grey, 1 opacity
+			
+			object.graphics.drawRoundRect(0, 0, 
+				padding+object.width,
+				padding+object.height,
+				shapeWidth,shapeHeight
+			);// (x spacing, y spacing, width, height)
+			object.graphics.endFill();
+
+		}
+
 		
 	}
 }
